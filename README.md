@@ -4,8 +4,10 @@
 
 Format the dataset in the exact format(with even the same spacing)
 and run in the terminal in pycharm with the following command to train the model
+
 python trainer-challenge.py --gpu=-1 -i ./TOX21  -p NR-AR
 
 Run the following line on the test set to get the baynesian statistics:
+
 python evaluate-challenge.py --gpu=-1 -m ./TOX21/ -d ./TOX21 -p NR-AR
 
