@@ -73,10 +73,10 @@ def main():
     F_list, T_list = [], []
     for mol in mols:
         #modify here
-        if len(Chem.MolToSmiles(mol, kekuleSmiles=True, isomericSmiles=True)) > 400:
+        if len(Chem.MolToSmiles(mol, kekuleSmiles=True, isomericSmiles=True)) > 550:
             print("too long mol was ignored")
         else:
-            F_list.append(mol_to_feature(mol, -1, 400))
+            F_list.append(mol_to_feature(mol, -1, 550))
             T_list.append(mol.GetProp('_Name'))
     Mf.random_list(F_list)
     Mf.random_list(T_list)
@@ -93,20 +93,20 @@ def main():
 
     # -------------------------------
     # Set up a neural network to evaluate
-    model = Mm.CNN(400, lensize, args.k1, args.s1, args.f1, args.k2, args.s2, args.k3, args.s3, args.f3,
+    model = Mm.CNN(550, lensize, args.k1, args.s1, args.f1, args.k2, args.s2, args.k3, args.s3, args.f3,
                    args.k4, args.s4, args.n_hid, args.n_out)
     model.compute_accuracy = False
     #model.to_gpu(args.gpu)
     f = open(args.model + '/' + args.protein + '/evaluation_epoch.csv', 'w')
 
     # -------------------------------
-    print("epoch", "TP", "FN", "FP", "TN", "Loss", "Accuracy", "MCC", "Specificity", "Precision", "Recall",
-          "F1", sep="\t")
-    f.write("epoch,TP,FN,FP,TN,Loss,Accuracy,MCC,Specificity,Precision,Recall,F1\n")
+    print("epoch", "TP", "FN", "FP", "TN", "Uncertainty", "Accuracy", "MCC", "Specificity", "Precision", "Sensitivity",
+          "F1","ale_uncertainty","epi_uncertainty", sep="\t")
+    f.write("epoch,TP,FN,FP,TN,Uncertainty,Accuracy,MCC,Specificity,Precision,Sensitivity,F1,ale_uncertainty,epi_uncertainty\n")
     data_t = np.asarray(T_list, dtype=np.int32).reshape(-1, 1)
-    data_f = np.asarray(F_list, dtype=np.float32).reshape(-1, 1, 400, lensize)
+    data_f = np.asarray(F_list, dtype=np.float32).reshape(-1, 1, 550, lensize)
     #print(data_t.shape, data_f.shape)
-    borders = [len(data_t) * i // 30 for i in range(30 + 1)]
+    borders = [len(data_t) * i // 100 for i in range(100 + 1)]
 
     data_f = np.array(data_f)
     data_t = np.array(data_t)
@@ -116,8 +116,8 @@ def main():
 
 
         serializers.load_npz(args.model + '/' + args.protein + '/model_snapshot_' + str(epoch), model)
-
-        for i in range(30):
+        #monte carlo sampling, predict for many 100s times to predict different outputs to use it for uncertainty
+        for i in range(100):
 
             x_gpu = data_f[borders[i]:borders[i + 1]]
             y_gpu = data_t[borders[i]:borders[i + 1]]
@@ -127,7 +127,15 @@ def main():
             loss_tmp = model(Variable(x_gpu), Variable(y_gpu)).data
             pred_score.extend(pred_tmp.reshape(-1).tolist())
             loss.append(loss_tmp.tolist())
-        loss = np.mean(loss)
+        #create prediction array
+        pred_output=np.asarray(pred_score)
+        #take the mean of the array of the calculation of different outputs generated from loops above
+        ale_unc = np.mean(pred_output * (1.0 - pred_output))
+        #calculate epi uncertainty
+        epi_unc = np.mean(pred_output ** 2) - np.mean(pred_output) ** 2
+        #total uncertainty
+        pred_output= ale_unc + epi_unc
+        #loss = np.mean(np.square(loss))
         pred_score = np.array(pred_score).reshape(-1, 1)
         pred = 1 * (pred_score >= 0.5)
 
@@ -137,9 +145,11 @@ def main():
         count_TN = np.sum(np.logical_and(data_t == pred, pred == 0) * 1).astype(float)
 
         Accuracy = (count_TP + count_TN) / (count_TP + count_FP + count_FN + count_TN)
-        Sepecificity = count_TN / (count_TN + count_FP)
+        Specificity = count_TN / (count_TN + count_FP)
         Precision = count_TP / (count_TP + count_FP)
+        #sensitivity
         Recall = count_TP / (count_TP + count_FN)
+        #F1
         Fmeasure = (2 * count_TP)/ (2*count_TP+count_FP+count_FN)
         import math
         MCC = (count_TP*count_TN-count_FP*count_FN)/math.sqrt(abs((count_TN
@@ -149,11 +159,11 @@ def main():
                                                                          *(count_TP+count_FN)))
 
 
-        print(epoch, count_TP, count_FN, count_FP, count_TN, loss, Accuracy, MCC, Sepecificity, Precision,
-              Recall, Fmeasure, sep="\t")
-        text = '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}\n'.format(
-            epoch, count_TP, count_FN, count_FP, count_TN, loss, Accuracy, MCC, Sepecificity, Precision, Recall,
-            Fmeasure)
+        print(epoch, count_TP, count_FN, count_FP, count_TN, pred_output, Accuracy, MCC, Specificity, Precision,
+              Recall, Fmeasure,ale_unc,epi_unc, sep="\t")
+        text = '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}\n'.format(
+            epoch, count_TP, count_FN, count_FP, count_TN, pred_output, Accuracy, MCC, Specificity, Precision, Recall,
+            Fmeasure,ale_unc,epi_unc)
         f.write(text)
 
     f.close()
