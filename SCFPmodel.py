@@ -46,16 +46,22 @@ class CNN(chainer.Chain):
         accuracy = F.binary_accuracy(y, t)
         report({'loss': loss, 'accuracy': accuracy}, self)
         return loss
-
+    #monte carlo drop out with drop out on nearly every layer
     def predict(self, x):
         h = F.leaky_relu(self.bn1(self.conv1(x)))  # 1st conv
+        h = F.dropout(self.bn1(h), 0.05)
         h = F.average_pooling_2d(h, (self.k2, 1), stride=self.s2, pad=(self.k2 // 2, 0))  # 1st pooling
+        h = F.dropout(h, 0.05)
         h = F.leaky_relu(self.bn2(self.conv2(h)))  # 2nd conv
+        h = F.dropout(self.bn2(h),0.05)
         h = F.average_pooling_2d(h, (self.k4, 1), stride=self.s4, pad=(self.k4 // 2, 0))  # 2nd pooling
+        h = F.dropout(h, 0.05)
         h = F.max_pooling_2d(h, (self.l4, 1))  # grobal max pooling, fingerprint
+        h = F.dropout(h, 0.05)
         h = self.fc3(h)  # fully connected
         sr = 0.00001 * cp.mean(cp.log(1 + h.data * h.data))  # sparse regularization
         h = F.leaky_relu(self.bn3(h))
+        h=F.dropout(self.bn3(h),0.05)
         return self.fc4(h), sr
 
     def fingerprint(self, x):
