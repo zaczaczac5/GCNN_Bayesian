@@ -32,7 +32,27 @@ atomInfo = 21
 structInfo = 21
 lensize = atomInfo + structInfo
 
+def softmax(x):
+    r=np.exp(x - np.max(x))
+    return r/r.sum(axis=0)
+def np_sigmoid(x):
+    return 1./(1.+np.exp(-x))
+npa = np.array
+def softmax1(w, t = 1.0):
+    e = np.exp(npa(w) / t)
+    dist = e / np.sum(e)
+    return dist
 
+
+def softmax2(x):
+    """
+    Compute softmax values for each sets of scores in x.
+
+    Rows are scores for each class.
+    Columns are predictions (samples).
+    """
+    scoreMatExp = np.exp(np.asarray(x))
+    return scoreMatExp / scoreMatExp.sum(0)
 # -------------------------------------------------------------
 def main():
     # 引数管理
@@ -63,9 +83,9 @@ def main():
 
     # -------------------------------
     print('Making Test Dataset...')
-    #file = args.data + '/' + args.protein + '_test.smiles'
+    file = args.data + '/' + args.protein + '_test.smiles'
     #file = args.data + '/' + args.protein + '_wrong_classification.smiles'
-    file = args.data + '/' + args.protein + '_new.smiles'
+    #file = args.data + '/' + args.protein + '_new.smiles'
     print('Loading smiles: ', file)
     smi = Chem.SmilesMolSupplier(file, delimiter='\t', titleLine=False)
     mols = [mol for mol in smi if mol is not None]
@@ -128,13 +148,20 @@ def main():
             pred_score.extend(pred_tmp.reshape(-1).tolist())
             loss.append(loss_tmp.tolist())
         #create prediction array
-        pred_output=np.asarray(pred_score)
-        #take the mean of the array of the calculation of different outputs generated from loops above
+        pred_output=np_sigmoid(np.asarray(pred_score))
+        # #take the mean of the array of the calculation of different outputs generated from loops above
         ale_unc = np.mean(pred_output * (1.0 - pred_output))
-        #calculate epi uncertainty
+        # #calculate epi uncertainty
         epi_unc = np.mean(pred_output ** 2) - np.mean(pred_output) ** 2
-        #total uncertainty
+        # #total uncertainty
         pred_output= ale_unc + epi_unc
+        # pred_output = softmax2((pred_score))
+        # # take the mean of the array of the calculation of different outputs generated from loops above
+        # ale_unc = np.mean(np.diag(pred_output) - np.square(pred_output))
+        # # calculate epi uncertainty
+        # epi_unc = np.mean(np.square((pred_output - np.mean(pred_output))))
+        # # total uncertainty
+        # pred_output = ale_unc + epi_unc
         #loss = np.mean(np.square(loss))
         pred_score = np.array(pred_score).reshape(-1, 1)
         pred = 1 * (pred_score >= 0.5)
