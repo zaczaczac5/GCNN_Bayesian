@@ -59,7 +59,7 @@ def main():
     parser = argparse.ArgumentParser(description='SMILES CNN fingerprint')
     parser.add_argument('--batchsize', '-b', type=int, default=32,
                         help='Number of moleculars in each mini-batch. Default = 32')
-    parser.add_argument('--epoch', '-e', type=int, default=40,
+    parser.add_argument('--epoch', '-e', type=int, default=6,
                         help='Number of max iteration to evaluate. Default = 20')
     parser.add_argument('--gpu', '-g', type=int, default=-1, help='GPU ID (negative value indicates CPU). Default = -1')
     parser.add_argument('--frequency', '-f', type=int, default=1, help='Epoch frequency for evaluation. Default = 1')
@@ -83,9 +83,11 @@ def main():
 
     # -------------------------------
     print('Making Test Dataset...')
-    file = args.data + '/' + args.protein + '_test.smiles'
+    #file = args.data + '/' + args.protein + '_wholeTest.smiles'
     #file = args.data + '/' + args.protein + '_wrong_classification.smiles'
-    #file = args.data + '/' + args.protein + '_new.smiles'
+    file = args.data + '/' + args.protein + '_new.smiles'
+    #file = args.data + '/' + args.protein + '_simple.smiles'
+    #file = args.data + '/' + args.protein + '_simpleTest.smiles'
     print('Loading smiles: ', file)
     smi = Chem.SmilesMolSupplier(file, delimiter='\t', titleLine=False)
     mols = [mol for mol in smi if mol is not None]
