@@ -1,4 +1,4 @@
-Smiles,Real_value,Predicted_value,Match
+Smiles,Real_value,Predicted_value,Match,In the training data
 O=[N+]([O-])c4cc(c(N=Nc3c1ccccc1n(c3(c2ccccc2))C)c(c4)Cl)Cl,0,0,True
 O=C1OC(=C(O1)COC(=O)C3N2C(=O)C(NC(=CC(=O)OC)C)C2SC3(C)(C))C,1,1,True
 O=C(c1ccc(cc1)Cl)C(N)C,1,0,False
