@@ -150,9 +150,9 @@ OCC1(C#C[Si](C)(C)C)(OC(O)C=C1),1,1,True,Yes
 O=C1c4ccccc4(C(=O)c2c(ccc(N)c12)Nc3cccc(c3)C),0,0,True,Yes
 O=C(OOC(=O)OCCCCCCCCCCCCCCCC)OCCCCCCCCCCCCCCCC,1,1,True,Yes
 Oc1c(cc(cc1CO)C)CO,1,0,False,Yes
-OC(C)CN(CCSSCCN(CC(O)C)CC(O)C)CC(O)C,1,0,False
-O=C(OC)NN(C(=O)Cl)c1ccccc1(OC),0,0,True
-O=C(OCC=C)N1CC(OS(=O)(=O)C)CC1(C(=O)N(C)C),0,0,True
+OC(C)CN(CCSSCCN(CC(O)C)CC(O)C)CC(O)C,1,0,False,Yes
+O=C(OC)NN(C(=O)Cl)c1ccccc1(OC),0,0,True,Yes
+O=C(OCC=C)N1CC(OS(=O)(=O)C)CC1(C(=O)N(C)C),0,0,True,Yes
 O=C(Oc1ccc(OC(=O)C)c(c1)C)C,1,1,True,Yes
 O=C(OC(C)C)NNc1cc(ccc1(OC))c2ccccc2,0,0,True,Yes
 O=S(=O)(c1ccccc1(F))Cl,1,0,False,Yes
