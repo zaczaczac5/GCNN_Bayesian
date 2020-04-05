@@ -88,7 +88,7 @@ def main():
     #file = args.data + '/' + args.protein + '_new.smiles'
     #file = args.data + '/' + args.protein + '_simple.smiles'
     #file = args.data + '/' + args.protein + '_simpleTest.smiles'
-    file = args.data + '/' + args.protein + '_wrong_classification.smiles'
+    file = args.data + '/' + args.protein + '_wrongex.smiles'
     print('Loading smiles: ', file)
     smi = Chem.SmilesMolSupplier(file, delimiter='\t', titleLine=False)
     mols = [mol for mol in smi if mol is not None]
@@ -103,8 +103,8 @@ def main():
         else:
             F_list.append(mol_to_feature(mol, -1, 550))
             T_list.append(mol.GetProp('_Name'))
-    Mf.random_list(F_list)
-    Mf.random_list(T_list)
+    #Mf.random_list(F_list)
+    #Mf.random_list(T_list)
     #Mf.random_list(grape)
     #Mf.random_list(grapej)
     #print(grape)
@@ -147,7 +147,7 @@ def main():
         cool,fat=[],[]
         pizza,yogurt=[],[]
 
-        serializers.load_npz(args.model + '/' + args.protein + '/model_snapshot_' + '8', model)
+        serializers.load_npz(args.model + '/' + args.protein + '/model_snapshot_' + '3', model)
 
         #monte carlo sampling, predict for many 100s times to predict different outputs to use it for uncertainty
         for i in range(100):
@@ -216,8 +216,9 @@ def main():
         f.write(text)
 
     f.close()
-
-
+    print('ale',cool)
+    print('epi',fat)
+    print(cool+fat)
 # -------------------------------
 if __name__ == '__main__':
     main()
