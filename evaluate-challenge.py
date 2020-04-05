@@ -59,7 +59,7 @@ def main():
     parser = argparse.ArgumentParser(description='SMILES CNN fingerprint')
     parser.add_argument('--batchsize', '-b', type=int, default=32,
                         help='Number of moleculars in each mini-batch. Default = 32')
-    parser.add_argument('--epoch', '-e', type=int, default=6,
+    parser.add_argument('--epoch', '-e', type=int, default=1,
                         help='Number of max iteration to evaluate. Default = 20')
     parser.add_argument('--gpu', '-g', type=int, default=-1, help='GPU ID (negative value indicates CPU). Default = -1')
     parser.add_argument('--frequency', '-f', type=int, default=1, help='Epoch frequency for evaluation. Default = 1')
@@ -84,8 +84,8 @@ def main():
     # -------------------------------
     print('Making Test Dataset...')
     #file = args.data + '/' + args.protein + '_wholeTest.smiles'
-    #file = args.data + '/' + args.protein + '_wrong_classification.smiles'
-    file = args.data + '/' + args.protein + '_new.smiles'
+    file = args.data + '/' + args.protein + '_wrong_classification.smiles'
+    #file = args.data + '/' + args.protein + '_new.smiles'
     #file = args.data + '/' + args.protein + '_simple.smiles'
     #file = args.data + '/' + args.protein + '_simpleTest.smiles'
     print('Loading smiles: ', file)
@@ -135,9 +135,12 @@ def main():
     for epoch in range(args.frequency, args.epoch + 1, args.frequency):
 
         pred_score, loss = [], []
+        lamp,phone,big=[],[],[]
 
 
-        serializers.load_npz(args.model + '/' + args.protein + '/model_snapshot_' + str(epoch), model)
+
+
+        serializers.load_npz(args.model + '/' + args.protein + '/model_snapshot_' + str(3), model)
         #monte carlo sampling, predict for many 100s times to predict different outputs to use it for uncertainty
         for i in range(100):
 
@@ -149,22 +152,20 @@ def main():
             loss_tmp = model(Variable(x_gpu), Variable(y_gpu)).data
             pred_score.extend(pred_tmp.reshape(-1).tolist())
             loss.append(loss_tmp.tolist())
-        #create prediction array
-        pred_output=np_sigmoid(np.asarray(pred_score))
-        # #take the mean of the array of the calculation of different outputs generated from loops above
-        ale_unc = np.mean(pred_output * (1.0 - pred_output))
-        # #calculate epi uncertainty
-        epi_unc = np.mean(pred_output ** 2) - np.mean(pred_output) ** 2
-        # #total uncertainty
-        pred_output= ale_unc + epi_unc
-        # pred_output = softmax2((pred_score))
-        # # take the mean of the array of the calculation of different outputs generated from loops above
-        # ale_unc = np.mean(np.diag(pred_output) - np.square(pred_output))
-        # # calculate epi uncertainty
-        # epi_unc = np.mean(np.square((pred_output - np.mean(pred_output))))
-        # # total uncertainty
-        # pred_output = ale_unc + epi_unc
-        #loss = np.mean(np.square(loss))
+            pred_output = np_sigmoid(np.asarray(pred_score))
+            # #take the mean of the array of the calculation of different outputs generated from loops above
+            ale_unc = np.mean(pred_output * (1.0 - pred_output))
+            # #calculate epi uncertainty
+            epi_unc = np.mean(pred_output ** 2) - np.mean(pred_output) ** 2
+            # #total uncertainty
+            pred_output = ale_unc + epi_unc
+            lamp.append(ale_unc)
+            phone.append(epi_unc)
+            big.append(pred_output)
+
+        ale=np.mean(lamp)
+        epi=np.mean(phone)
+        tot=np.mean(big)
         pred_score = np.array(pred_score).reshape(-1, 1)
         pred = 1 * (pred_score >= 0.5)
 
@@ -188,12 +189,16 @@ def main():
                                                                          *(count_TP+count_FN)))
 
 
-        print(epoch, count_TP, count_FN, count_FP, count_TN, pred_output, Accuracy, MCC, Specificity, Precision,
-              Recall, Fmeasure,ale_unc,epi_unc, sep="\t")
+        print(epoch, count_TP, count_FN, count_FP, count_TN,tot, Accuracy, MCC, Specificity, Precision,
+              Recall, Fmeasure,ale,epi, sep="\t")
         text = '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}\n'.format(
-            epoch, count_TP, count_FN, count_FP, count_TN, pred_output, Accuracy, MCC, Specificity, Precision, Recall,
-            Fmeasure,ale_unc,epi_unc)
+            epoch, count_TP, count_FN, count_FP, count_TN, tot, Accuracy, MCC, Specificity, Precision, Recall,
+            Fmeasure,ale,epi)
         f.write(text)
+        print('ale', lamp)
+        print('epi', phone)
+        print('tot', big)
+        print('score',pred_score)
 
     f.close()
 
