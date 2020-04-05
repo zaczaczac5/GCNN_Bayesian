@@ -171,7 +171,7 @@ O=C(OCC)CCCN(c1cccc(c1)C)CCCC,1,0,False,Yes
 O=C(OC)c1ccc(cc1)C(=O)OCC=C,1,0,False,Yes
 O=C(Nc1cccc(c1)[N+](=O)[O-])c2cc3ccc4c5cc(ccc5([nH]c4(c3(cc2(O)))))Cl,0,0,True,Yes
 O=C1CCCCC1CC2C(=O)CCCC2,1,0,False,Yes
-O=C(c1ccc3c(c1)c2ccccc2n3CC)c4ccccc4C,0,0,True
+O=C(c1ccc3c(c1)c2ccccc2n3CC)c4ccccc4C,0,0,True,Yes
 O=Cc1cc(O)c(O)c(c1)[N+](=O)[O-],0,0,True,Yes
 O=C(O)C2NCc1ccccc1C2,1,0,False,Yes
 O=C(OCC(=C)COC(=O)C)C,1,0,False,Yes
