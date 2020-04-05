@@ -80,7 +80,7 @@ O=C(N)c1ccc(cc1)Nc2ccc(O)c3C(=O)c4ccccc4(C(=O)c23),0,0,True,Yes
 N#CCCN(c2ccc(N=Nc1c(cc(cc1Cl)[N+](=O)[O-])Cl)cc2)CCOC(=O)c3ccccc3,0,0,True,Yes
 NCCCCCN,1,0,False,Yes
 O=C(OCCC1(C(=O)OCC=C)(C(=O)CCC1))C,1,0,False,Yes
-OC4c3c(ccc2cc1c5ccccc5(ccc1c(c23)C4))C,0,0,True,Yes
+OC4c3c(ccc2cc1c5ccccc5(ccc1c(c23)C4))C,0,0,True,No
 O(C)C(OC)C=C(C)C,1,0,False,Yes
 O=S(=O)(NCCO)C(F)(F)F,1,0,False,Yes
 O(C)[Si](OC)(OC)C(=C)C=C,1,0,False,Yes
@@ -156,14 +156,14 @@ O=C(OCC=C)N1CC(OS(=O)(=O)C)CC1(C(=O)N(C)C),0,0,True,Yes
 O=C(Oc1ccc(OC(=O)C)c(c1)C)C,1,1,True,Yes
 O=C(OC(C)C)NNc1cc(ccc1(OC))c2ccccc2,0,0,True,Yes
 O=S(=O)(c1ccccc1(F))Cl,1,0,False,Yes
-Fc1ccccc1,1,0,False,Yes
+Fc1ccccc1,1,0,False,No
 O=C1c4ccccc4(C(=O)c2c(ccc(O)c12)Nc3ccc(O)cc3),0,0,True,Yes
 O=C1c3c(O)cc(c(N)c3(C(=O)c2c(O)ccc(N)c12))c5ccc(Oc4nc(F)nc(n4)N(CCCC)CCCC)cc5,0,0,True,Yes
 N#Cc1cc(ccc1Cl)Cl,1,0,False,Yes
 O=C(Oc1ccc(cc1)C2CCC(CCCCC)CC2)C3CCC(CC3)C4CCC(CCC)CC4,1,0,False,Yes
 O=C(Nc1ccc(N)cc1(OC))c2ccc(N)cc2,0,0,True,Yes
 O=C(OOC(C)(C)C)C(CC)CCCC,1,1,True,Yes
-C(=CC=C(C=CC=C(C=CC1=C(C)CCCC1(C)C)C)C)C=C(C=CC=C(C=CC2=C(C)CCCC2(C)C)C)C,1,0,False,Yes
+C(=CC=C(C=CC=C(C=CC1=C(C)CCCC1(C)C)C)C)C=C(C=CC=C(C=CC2=C(C)CCCC2(C)C)C)C,1,0,False,No
 Fc1cccc(c1)C2CCC(CC)CC2,1,0,False,Yes
 O=C(Nc1ccc(cc1(OC))[N+](=O)[O-])c2ccc(cc2)[N+](=O)[O-],0,0,True,Yes
 O=C(OC)C(=C)COCC(=C)C(=O)OC,1,0,False,Yes
