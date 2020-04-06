@@ -144,7 +144,7 @@ def main():
     for epoch in range(args.frequency, args.epoch + 1, args.frequency):
 
         pred_score, loss = [], []
-        cool,fat=[],[]
+        cool,fata=[],[]
         pizza,yogurt=[],[]
 
         serializers.load_npz(args.model + '/' + args.protein + '/model_snapshot_' + '3', model)
@@ -166,7 +166,7 @@ def main():
             prod = np.square(tmp)
             ai = np.mean(dg - prod)
             cool.append(ai)
-            fat.append(ep)
+            fata.append(ep)
 
             pred_tmp_gpu = F.sigmoid(pred_tmp_gpu)
             pred_tmp = pred_tmp_gpu.data
@@ -217,8 +217,8 @@ def main():
 
     f.close()
     print('ale',cool)
-    print('epi',fat)
-    print(cool+fat)
+    print('epi',fata)
+    print(cool+fata)
 # -------------------------------
 if __name__ == '__main__':
     main()
