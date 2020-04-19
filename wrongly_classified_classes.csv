@@ -1,4 +1,4 @@
-Chemical Classes,total Uncertainty,Aleeatoric Uncertainty,Epistemic Uncertainty,Accuracy,Specificity,Precision,Sensitivity,F1
+Chemical Classes,total Uncertainty,Aleatoric Uncertainty,Epistemic Uncertainty,Accuracy,Specificity,Precision,Sensitivity,F1
 Acyl_halides,8.01408987e-07,8.01408987e-07,0.0,1.0,1.0,nan,nan,nan
 Anthracenes,0.001499870832026345,0.001499870832026345,-6.309625423545455e-19,1.0,1.0,nan,nan,nan
 Azobenzenes,0.0370374937431459,0.0370374877831459,5.959009308500001e-09,0.8,0.8,0.0,nan,0.0
