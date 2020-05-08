@@ -15,3 +15,6 @@ The folder NR-AR contains the evaluation results using different datasets
 
 The folder TOX21 contains the datasets used.
 
+whole_original_smiles max length 503
+japan max length 330
+
