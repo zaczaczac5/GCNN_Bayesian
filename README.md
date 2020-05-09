@@ -9,7 +9,7 @@ python trainer-challenge.py --gpu=-1 -i ./TOX21  -p NR-AR
 
 Run the following line on the test set to get the baynesian statistics:
 
-python evaluate-challenge.py --gpu=-1 -m ./TOX21/ -d ./TOX21 -p NR-AR
+python evaluate-challenge.py  -m ./TOX21/ -d ./TOX21 -p NR-AR
 
 The folder NR-AR contains the evaluation results using different datasets
 
