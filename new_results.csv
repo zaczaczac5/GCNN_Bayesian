@@ -1,2 +1,2 @@
 Dataset,Model,Number_of_iteration_of_prediction,Atom_size,Dropout,num_training_epoch,num_test_epoch,TP,FN,FP,TN,Uncertainty,Accuracy,MCC,Specificity,Precision,Sensitivity,F1,ale_uncertainty,epi_uncertainty
-rand_wrongly_classified,first,1,330,0,85,1,71.0,31.0,1.0,98.0,0.05507119,0.8407960199004975,0.7152640559995337,0.98989898989899,,0.9861111111111112,0.696078431372549,0.8160919540229885,0.05507119,0.0
+rand_wrongly_classified,first,1,330,0,85,1,71.0,31.0,1.0,98.0,0.05507119,0.8407960199004975,0.7152640559995337,0.98989898989899,0.9861111111111112,0.696078431372549,0.8160919540229885,0.05507119,0.0
