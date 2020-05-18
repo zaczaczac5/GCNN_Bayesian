@@ -1,4 +1,4 @@
-class,epoch,TP,FN,FP,TN,Uncertainty,Accuracy,MCC,Specificity,Precision,Sensitivity,F1
+class,epoch,TP,FN,FP,TN,Accuracy,MCC,Specificity,Precision,Sensitivity,F1
 Benzenoids,1,5.0,1.0,1.0,4.0,0.8181818181818182,0.6333333333333333,0.8,0.8333333333333334,0.8333333333333334,0.8333333333333334
 Hydron carbonsepoch,1,0.0,0.0,6.0,9.0,0.6,nan,0.6,0.0,nan,0.0
 Lignans, neolignans and related compounds,1,2.0,1.0,4.0,3.0,0.5,0.0890870806374748,0.42857142857142855,0.3333333333333333,0.6666666666666666,0.4444444444444444
